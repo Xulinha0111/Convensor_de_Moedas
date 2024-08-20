@@ -7,4 +7,3 @@ Para ver o App funcinando, é necessário instalar as dependências.
     npm install axios
 
 Todo o aplicativo foi codado no arquivo App.js
-
