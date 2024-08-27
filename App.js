@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 import { View, Text, TextInput, Picker, StyleSheet, ScrollView, ActivityIndicator, TouchableOpacity } from 'react-native';
 import axios from 'axios';
 
-// Mapear códigos de moeda para nomes completos
 const currencyNames = {
   USD: 'Dólar dos EUA',
   EUR: 'Euro',
@@ -29,16 +28,17 @@ export default function App() {
   const [rates, setRates] = useState({});
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
+  const [date, setDate] = useState('');
 
   useEffect(() => {
     const fetchCurrencies = async () => {
       try {
         const response = await axios.get(BASE_URL);
         const availableCurrencies = Object.keys(response.data.conversion_rates);
-        // Filtrar apenas as moedas com nomes definidos
         const filteredCurrencies = availableCurrencies.filter(currency => currencyNames[currency]);
         setCurrencies(filteredCurrencies);
         setRates(response.data.conversion_rates);
+        setDate(response.data.time_last_update_utc);
         setLoading(false);
       } catch (error) {
         setError('Erro ao carregar moedas. Tente novamente mais tarde.');
@@ -59,7 +59,6 @@ export default function App() {
   }, [amount, baseCurrency, targetCurrency, rates]);
 
   const formatAmount = (text) => {
-    // Substituir ',' por '.' e garantir que o texto é numérico
     const formattedText = text.replace(/,/g, '.');
     return isNaN(formattedText) ? '' : formattedText;
   };
@@ -89,7 +88,9 @@ export default function App() {
   return (
     <ScrollView style={styles.container}>
       <Text style={styles.title}>Conversor de Moedas</Text>
-      <Text style={styles.info}>Os valores são baseados nas taxas de câmbio do dia 20/08/2024 às 11h30.</Text>
+      <Text style={styles.info}>
+        Os valores são baseados nas taxas de câmbio: ({date})
+      </Text>
       <View style={styles.inputContainer}>
         <Text>Valor:</Text>
         <TextInput
