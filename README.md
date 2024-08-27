@@ -1,4 +1,4 @@
-# Convensor_de_Moedas
+# Conversor_de_Moedas
 
 Trabalho realizado por Renan, Marcos, Letycia e Julia - 3° Info 2024
 
